@@ -1,17 +1,48 @@
 <div class="login">
-    <div class="login__panel">
-        <div class="login__field">
-            <label class="login__label" for="username">Usuario</label>
-            <input class="login__input" pInputText id="username" type="text" />
-        </div>
-
-        <div class="login__field">
-            <label class="login__label" for="password">Password</label>
-            <input class="login__input" pInputText id="password" type="password" />
-        </div>
-
-        <div class="login__actions">
-            <p-button label="Login" icon="pi pi-user" styleClass="login__button"></p-button>
-        </div>
+  <form class="login__panel" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="login__field">
+      <label class="login__label" for="email">Usuario</label>
+      <input class="login__input" pInputText id="email" formControlName="email" type="email" />
+      @if (email?.touched && email?.invalid) {
+      <small class="login__error">
+        @if (email?.errors?.['required']) {
+        <span>El email es obligatorio.</span>
+        } @if (email?.errors?.['email']) {
+        <span>Email no válido.</span>
+        }
+      </small>
+      }
     </div>
+
+    <div class="login__field">
+      <label class="login__label" for="password">Password</label>
+      <input
+        class="login__input"
+        pInputText
+        id="password"
+        formControlName="password"
+        type="password"
+      />
+      @if (password?.touched && password?.invalid) {
+      <small class="login__error">
+        @if (password?.errors?.['required']) {
+        <span>La contraseña es obligatoria.</span>
+        } @if (password?.errors?.['minlength']) {
+        <span>Mínimo 6 caracteres.</span>
+        }
+      </small>
+      }
+    </div>
+
+    <div class="login__actions">
+      <button pButton type="submit" class="login__button" [disabled]="submitting">
+        <i class="pi pi-user"></i>
+        <span>{{ submitting ? 'Iniciando sesión...' : 'Login' }}</span>
+      </button>
+    </div>
+
+    @if (error) {
+    <div class="login__error">{{ error }}</div>
+    }
+  </form>
 </div>
