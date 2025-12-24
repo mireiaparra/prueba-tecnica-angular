@@ -6,6 +6,8 @@ import {
 import { provideRouter } from '@angular/router';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { MockAuthInterceptor } from './core/mock-auth.interceptor';
 
 import { routes } from './app.routes';
 
@@ -19,5 +21,6 @@ export const appConfig: ApplicationConfig = {
         preset: Aura,
       },
     }),
+    { provide: HTTP_INTERCEPTORS, useClass: MockAuthInterceptor, multi: true },
   ],
 };
