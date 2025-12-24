@@ -1,12 +1,19 @@
 .form {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 20px;
+  &__error {
+    font-size: 10px;
+    color: var(--color-error);
+    position: absolute;
+    bottom: -15px;
+  }
   &__input{
     &--group {
       display: flex;
       flex-direction: column;
       gap: 5px;
+      position: relative;
       &.textarea {
          grid-column: 1/3;
       }

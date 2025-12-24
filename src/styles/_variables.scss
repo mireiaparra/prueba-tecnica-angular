@@ -11,3 +11,17 @@ $color-error: #dc3545;
 
 // Tipografía y espaciado
 $font-family-base: 'Satoshi-Regular', system-ui;
+
+:root {
+	--color-primary: #{$color-primary};
+	--color-primary-600: #{$color-primary-600};
+	--color-secondary: #{$color-secondary};
+	--color-surface: #{$color-surface};
+	--color-border: #{$color-border};
+	--color-background: #{$color-background};
+	--color-success: #{$color-success};
+	--color-warning: #{$color-warning};
+	--color-error: #{$color-error};
+
+	--font-family-base: #{$font-family-base};
+}

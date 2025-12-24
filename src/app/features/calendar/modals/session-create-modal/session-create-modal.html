@@ -2,6 +2,9 @@
       <div class="form__input--group">
         <label>Título</label>
         <input pInputText formControlName="title" />
+        @if(form.get('title')?.touched && form.get('title')?.hasError('required')) {
+        <small class="form__error">Título obligatorio</small>
+        }
       </div>
 
       <div class="form__input--group">
@@ -12,27 +15,42 @@
       <div class="form__input--group">
         <label>Categoría</label>
         <p-select [filter]="true" formControlName="category" [options]="availableCategories" appendTo="body"></p-select>
+        @if(form.get('category')?.touched && form.get('category')?.hasError('required')) {
+        <small class="form__error">Categoría obligatoria</small>
+        }
       </div>
 
       <div class="form__input--group">
         <label>Ciudad</label>
         <input pInputText formControlName="city" />
+        @if(form.get('city')?.touched && form.get('city')?.hasError('required')) {
+        <small class="form__error">Ciudad obligatoria</small>
+        }
       </div>
 
       <div class="form__input--group">
         <label>Fecha y hora</label>
         <p-datepicker formControlName="date" [showTime]="true" dateFormat="yy-mm-dd" appendTo="body"></p-datepicker>
+        @if(form.get('date')?.touched && form.get('date')?.hasError('required')) {
+        <small class="form__error">Fecha y hora obligatoria</small>
+        }
       </div>
 
       <div class="form__input--group">
         <label>Estado</label>
         <p-select formControlName="status" [options]="statusOptions" appendTo="body"></p-select>
+        @if(form.get('status')?.touched && form.get('status')?.hasError('required')) {
+        <small class="form__error">Estado obligatorio</small>
+        }
       </div>
 
 
     <div class="form__input--group textarea">
       <label>Descripción</label>
       <textarea pInputTextarea rows="4" formControlName="description" [autoResize]="false"></textarea>
+      @if(form.get('description')?.touched && form.get('description')?.hasError('required')) {
+      <small class="form__error">Descripción obligatoria</small>
+      }
     </div>
 
     <div class="form__buttons">

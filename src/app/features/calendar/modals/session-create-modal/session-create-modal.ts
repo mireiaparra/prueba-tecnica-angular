@@ -1,6 +1,6 @@
 import { Component, inject, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
@@ -34,37 +34,20 @@ export class SessionCreateModal {
   public statusOptions: string[] = ['Borrador', 'Bloqueado', 'Oculto'];
 
   public form = this.fb.group({
-    title: [''],
-    description: [''],
+    title: ['', [Validators.required]],
+    description: ['', [Validators.required]],
     image: [''],
-    category: ['Formación'],
-    city: [''],
-    date: [null as Date | null],
-    status: ['borrador'],
+    category: ['Formación', [Validators.required]],
+    city: ['', [Validators.required]],
+    date: [null as Date | null, [Validators.required]],
+    status: ['borrador', [Validators.required]],
   });
 
-  private dialogRef = (() => {
-    try {
-      return inject(DynamicDialogRef as any) as DynamicDialogRef;
-    } catch {
-      return null;
-    }
-  })();
 
-  private dialogConfig = (() => {
-    try {
-      return inject(DynamicDialogConfig as any) as DynamicDialogConfig;
-    } catch {
-      return null;
-    }
-  })();
 
   private session: SessionItem | null = null;
 
   constructor(public ref: DynamicDialogRef) {
-    if (this.dialogConfig && this.dialogConfig.data && (this.dialogConfig.data as any).session) {
-      this.session = (this.dialogConfig.data as any).session as SessionItem;
-    }
     this._fillForm();
   }
 
@@ -85,6 +68,11 @@ export class SessionCreateModal {
   }
 
   onSubmit() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
     const raw = this.form.value as any;
     const payload: Partial<SessionItem> = {
       title: raw.title,
