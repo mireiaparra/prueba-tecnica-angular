@@ -1,8 +1,8 @@
 <section class="calendar">
   <header class="calendar__header">
     <div class="calendar__nav">
-      <button (click)="prevMonth()">‹</button>
-      <button (click)="nextMonth()">›</button>
+      <i class="pi pi-angle-left icon" (click)="prevMonth()"></i>
+      <i class="pi pi-angle-right icon" (click)="nextMonth()"></i>
       <h3>{{ filters.month | capitalize }}</h3>
     </div>
 
@@ -28,27 +28,56 @@
       </div>
 
       @if(isAdmin) {
-        <button pButton type="button" (click)="openCreateModal()">Nueva sesión</button>
+      <button pButton type="button" (click)="openCreateModal()">Nueva sesión</button>
       }
     </div>
   </header>
 
-  <div class="calendar__grid">
-    @for (d of daysInMonth(); track $index) {
-    <div class="day">
-      <div class="day__label">{{ d.getDate() }}</div>
-      <ul class="day__sessions">
-        @for (s of sessionsForDate(d.toISOString().slice(0,10)); track $index) {
-        <li>
-          <div class="sess" (click)="openCreateModal(s)">
-            <strong>{{ s.title }}</strong>
-            <small>{{ s.date }}</small>
-            <div class="sess__meta">{{ s.category }} • {{ s.status }}</div>
-          </div>
-        </li>
-        }
-      </ul>
+  <div class="calendar__container">
+    <div class="calendar__weekdays">
+      @for(wd of weekDays; track $index) {
+      <div class="weekday">{{ wd | capitalize }}</div>
+      }
     </div>
-    }
+    <div class="calendar__grid">
+      @for(d of daysGrid(); track $index) {
+
+      <div
+        class="day"
+        [ngClass]="{'other-month past': isPast(d), 'today': isToday(d)}"
+      >
+        <div class="day__label">
+          {{ d.getDate() }} <span class="day__month">{{ monthShort(d) | capitalize}}</span>
+        </div>
+        <ul class="day__sessions">
+          @if(sessionsForDate(d.toISOString().slice(0,10)).length > 0){
+          <li>
+              <div
+              class="sess"
+              [ngClass]="statusClass(sessionsForDate(d.toISOString().slice(0, 10))[0].status)"
+              (click)="openCreateModal(sessionsForDate(d.toISOString().slice(0, 10))[0])"
+            >
+              <span class="sess__bar"></span>
+              <span class="sess__time">{{
+                sessionsForDate(d.toISOString().slice(0, 10))[0].date.slice(11, 16)
+              }}</span>
+              <span class="sess__title">{{
+                sessionsForDate(d.toISOString().slice(0, 10))[0].title
+              }}</span>
+              <i
+                class="sess__status"
+                [ngClass]="statusIcon(sessionsForDate(d.toISOString().slice(0, 10))[0].status)"
+                aria-hidden="true"
+              ></i>
+            </div>
+          </li>
+          @if(sessionsForDate(d.toISOString().slice(0,10)).length > 1){
+
+          <li class="more">+{{ sessionsForDate(d.toISOString().slice(0, 10)).length - 1 }}</li>
+          } }
+        </ul>
+      </div>
+      }
+    </div>
   </div>
 </section>

@@ -9,12 +9,20 @@ import { CapitalizePipe } from '../../shared/pipes/capitalize.pipe';
 import { SessionFilters, SessionItem } from '../../core/models/Session.interface';
 import { DynamicDialogModule, DialogService } from 'primeng/dynamicdialog';
 import { SessionCreateModal } from './modals/session-create-modal/session-create-modal';
-
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CommonModule, FormsModule, MultiSelectModule, InputTextModule, CapitalizePipe, DynamicDialogModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MultiSelectModule,
+    InputTextModule,
+    CapitalizePipe,
+    DynamicDialogModule,
+    ButtonModule,
+  ],
   providers: [DialogService],
   templateUrl: './calendar.html',
   styleUrls: ['./calendar.scss'],
@@ -36,6 +44,80 @@ export class Calendar {
   public availableCategories: string[] = ['Formación', 'Reunión', 'Demo'];
 
   public statusOptions: string[] = ['Borrador', 'Bloqueado', 'Oculto'];
+  public weekDays: string[] = [
+    'lunes',
+    'martes',
+    'miércoles',
+    'jueves',
+    'viernes',
+    'sábado',
+    'domingo',
+  ];
+
+  public weekdayName(date: Date): string {
+    return date.toLocaleDateString('es-ES', { weekday: 'long' });
+  }
+
+  public monthShort(date: Date): string {
+    return date.toLocaleString('es-ES', { month: 'short' }).replace('.', '');
+  }
+
+  public isToday(date: Date): boolean {
+    const today = new Date();
+    return (
+      date.getFullYear() === today.getFullYear() &&
+      date.getMonth() === today.getMonth() &&
+      date.getDate() === today.getDate()
+    );
+  }
+
+  public isPast(date: Date): boolean {
+    const today = new Date();
+    const dOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    const tOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    return dOnly < tOnly;
+  }
+
+  public categoryClass(category?: string) {
+    switch ((category || '').toLowerCase()) {
+      case 'formación':
+      case 'formacion':
+        return 'cat-formation';
+      case 'reunión':
+      case 'reunion':
+        return 'cat-meeting';
+      case 'demo':
+        return 'cat-demo';
+      default:
+        return 'cat-default';
+    }
+  }
+
+  public statusClass(status?: string) {
+    switch ((status || '').toLowerCase()) {
+      case 'borrador':
+        return 'status-borrador';
+      case 'bloqueado':
+        return 'status-bloqueado';
+      case 'oculto':
+        return 'status-oculto';
+      default:
+        return 'status-default';
+    }
+  }
+
+  public statusIcon(status?: string) {
+    switch ((status || '').toLowerCase()) {
+      case 'borrador':
+        return 'pi pi-pen-to-square';
+      case 'bloqueado':
+        return 'pi pi-lock';
+      case 'oculto':
+        return 'pi pi-eye-slash';
+      default:
+        return 'pi pi-circle';
+    }
+  }
 
   ngOnInit() {
     this.getSessions();
@@ -68,13 +150,21 @@ export class Calendar {
     this.getSessions();
   }
 
-  public daysInMonth(): Date[] {
-    const date = new Date(this.month);
-    const year = date.getFullYear();
-    const month = date.getMonth();
+  public daysGrid(): Date[] {
+    const year = this.month.getFullYear();
+    const month = this.month.getMonth();
+
+    const firstOfMonth = new Date(year, month, 1);
+    // compute offset from Monday (0..6)
+    const startOffset = (firstOfMonth.getDay() + 6) % 7; // Monday -> 0
+    const firstShown = new Date(year, month, 1 - startOffset);
+
+    const lastOfMonth = new Date(year, month + 1, 0);
+
     const days: Date[] = [];
-    const total = new Date(year, month + 1, 0).getDate();
-    for (let d = 1; d <= total; d++) days.push(new Date(year, month, d));
+    for (let d = new Date(firstShown); d <= lastOfMonth; d.setDate(d.getDate() + 1)) {
+      days.push(new Date(d));
+    }
     return days;
   }
 
@@ -85,8 +175,8 @@ export class Calendar {
       header: 'Nueva sesión',
       closable: true,
       data: {
-        session
-      }
+        session,
+      },
     });
 
     if (ref && ref.onClose && ref.onClose.subscribe) {

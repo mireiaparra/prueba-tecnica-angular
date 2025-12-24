@@ -1,7 +1,12 @@
 .calendar {
-  max-width: 1100px;
-  margin: 1rem auto;
-  padding: 1rem;
+  padding: 50px;
+  &__container {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+  }
 
   &__header {
     display: flex;
@@ -23,22 +28,67 @@
     align-items: center;
   }
 
+  &__weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    height: 30px;
+    align-items: center;
+    justify-content: start;
+  }
+
   &__grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 0.5rem;
+    grid-auto-rows: 140px;
+  }
+
+  .weekday {
+    padding: 0 10px;
+  }
+  &:not(:first-of-type) {
+    border-left: 1px solid var(--color-secondary);
   }
 
   .day {
-    border: 1px solid #eee;
-    min-height: 120px;
+    border: 1px solid var(--color-border);
+    height: 140px;
     padding: 0.5rem;
-    background: #fff;
+    background: var(--color-surface);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
   }
+
+  .today {
+    > .day__label,
+    .day__month {
+      color: var(--color-surface);
+      width: fit-content;
+      padding: 2px 5px;
+      border-radius: 10px;
+    }
+    > .day__label {
+      background-color: var(--color-primary);
+    }
+  }
+
+  .day.other-month {
+    background-color: var(--color-background);
+  }
+
+  .day.other-month .day__label {
+    color: var(--color-secondary);
+  }
+
+  .day__month {
+    color: var(--color-secondary);
+  }
+
   .day__label {
     font-weight: 700;
     margin-bottom: 0.5rem;
   }
+
   .day__sessions {
     list-style: none;
     margin: 0;
@@ -46,14 +96,82 @@
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+    margin-top: auto;
   }
+
   .sess {
-    background: #f9f9f9;
+    background: var(--color-background);
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    overflow: hidden;
+    cursor: pointer;
   }
+
+  .sess__bar {
+    width: 4px;
+    height: 1.6rem;
+    border-radius: 2px;
+    flex: 0 0 auto;
+  }
+
+  .sess__time {
+    font-size: 0.75rem;
+    color: var(--color-secondary);
+    flex: 0 0 auto;
+  }
+
+  .sess__title {
+    flex: 1 1 auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sess__status {
+    flex: 0 0 auto;
+    color: var(--color-secondary);
+  }
+
+  .more {
+    font-size: 0.9rem;
+    color: var(--color-secondary);
+  }
+
+  $status-colors: (
+    borrador: var(--color-primary),
+    bloqueado: var(--color-warning),
+    oculto: var(--color-secondary),
+    default: var(--color-border)
+  );
+
+  @each $key, $c in $status-colors {
+    .status-#{$key} {
+      .sess__bar {
+        background: #{$c};
+      }
+      .sess__time {
+        color: #{$c};
+      }
+      .sess__status {
+        color: #{$c};
+      }
+      &.sess {
+        background: color-mix(in srgb, #{$c} 12%, transparent);
+      }
+    }
+  }
+
   .sess__meta {
     font-size: 0.75rem;
-    color: #666;
+    color: var(--color-secondary);
   }
+}
+
+.icon {
+  font-size: 30px;
+  color: var(--color-secondary);
+  cursor: pointer;
 }
