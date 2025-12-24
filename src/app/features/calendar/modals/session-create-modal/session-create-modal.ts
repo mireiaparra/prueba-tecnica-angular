@@ -2,6 +2,8 @@ import { Component, inject, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { SelectModule } from 'primeng/select';
@@ -22,13 +24,16 @@ import { SessionItem } from '../../../../core/models/Session.interface';
     FileUploadModule,
     ButtonModule,
     TextareaModule,
+    ConfirmDialogModule,
   ],
   templateUrl: './session-create-modal.html',
   styleUrls: ['./session-create-modal.scss'],
+  providers: [ConfirmationService],
 })
 export class SessionCreateModal {
   private fb = inject(FormBuilder);
   private _calendarSvc = inject(CalendarService);
+  private _confirm = inject(ConfirmationService);
   public availableCategories: string[] = ['Formación', 'Reunión', 'Demo'];
 
   public statusOptions: string[] = ['Borrador', 'Bloqueado', 'Oculto'];
@@ -40,14 +45,13 @@ export class SessionCreateModal {
     category: ['Formación', [Validators.required]],
     city: ['', [Validators.required]],
     date: [null as Date | null, [Validators.required]],
-    status: ['borrador', [Validators.required]],
+    status: ['Borrador', [Validators.required]],
   });
 
+  public session?: SessionItem;
 
-
-  private session: SessionItem | null = null;
-
-  constructor(public ref: DynamicDialogRef) {
+  constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig) {
+    this.session = this.config.data.session;
     this._fillForm();
   }
 
@@ -83,7 +87,7 @@ export class SessionCreateModal {
       date: raw.date instanceof Date ? raw.date.toISOString() : raw.date,
       image: raw.image,
     };
-    const id = (this.session && this.session.id) ? this.session.id : null;
+    const id = this.session && this.session.id ? this.session.id : null;
     if (id) {
       this._calendarSvc.updateSession(id, payload).subscribe({
         next: (resp) => {
@@ -102,6 +106,24 @@ export class SessionCreateModal {
 
   onCancel() {
     this.ref.close();
+  }
+
+  onDelete() {
+    const id = this.session && (this.session as any).id ? (this.session as any).id : null;
+    if (!id) return;
+    this._confirm.confirm({
+      message: '¿Eliminar esta sesión? Esta acción no se puede deshacer.',
+      header: 'Confirmar eliminación',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this._calendarSvc.deleteSession(id).subscribe({
+          next: (resp) => {
+            this.ref.close(resp);
+          },
+          error: () => {},
+        });
+      },
+    });
   }
 
   onFileUpload(event: any) {
