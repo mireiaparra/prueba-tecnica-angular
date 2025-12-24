@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { inject } from '@angular/core';
+import { finalize } from 'rxjs/operators';
+import { AuthService } from '../../core/auth.service';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 
@@ -16,6 +18,7 @@ import { InputTextModule } from 'primeng/inputtext';
 export class Login {
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private auth = inject(AuthService);
 
   public submitting: boolean = false;
   public error?: string;
@@ -39,5 +42,20 @@ export class Login {
   public submit() {
     this.form.markAllAsTouched();
     if (!this.form.valid) return;
+    this.submitting = true;
+    this.error = undefined;
+
+    const email = this.email?.value;
+    const password = this.password?.value;
+
+    this.auth
+      .login(email, password)
+      .pipe(finalize(() => (this.submitting = false)))
+      .subscribe({
+        next: () => this.router.navigate(['/calendar']),
+        error: (err: any) => {
+          this.error = err?.error?.message || err?.message || 'Error en login';
+        },
+      });
   }
 }

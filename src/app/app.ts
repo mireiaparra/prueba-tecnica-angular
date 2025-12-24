@@ -1,12 +1,17 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { Header } from './shared/header/header';
+import { AuthService } from './core/auth.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [Header, RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrls: ['./app.scss'],
 })
 export class App {
   protected readonly title = signal('prueba-tecnica-angular');
+  public auth = inject(AuthService);
 }

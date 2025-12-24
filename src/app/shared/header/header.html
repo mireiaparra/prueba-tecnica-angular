@@ -1,0 +1,30 @@
+<nav class="app-header">
+  <div class="left">
+    <ul class="nav-list">
+      @for(item of menuItems; track $index) {
+
+      <li>
+        <button class="nav-link" type="button" (click)="item.action()">{{ item.label }}</button>
+      </li>
+      }
+    </ul>
+  </div>
+
+  <div class="right">
+    <div class="user-menu" (click)="$event.stopPropagation()">
+      <button class="user-button" type="button" (click)="toggleUserMenu()">
+        {{ usernameLabel }}
+      </button>
+      @if(userMenuOpen){
+      <ul class="user-dropdown">
+        @for(item of userItems; track $index) {
+        <li>
+          <button type="button" (click)="item.action(); closeUserMenu()">{{ item.label }}</button>
+        </li>
+        }
+      </ul>
+
+      }
+    </div>
+  </div>
+</nav>

@@ -5,6 +5,7 @@ import {
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { providePrimeNG } from 'primeng/config';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import Aura from '@primeuix/themes/aura';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MockAuthInterceptor } from './core/mock-auth.interceptor';
@@ -16,6 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+    provideHttpClient(withInterceptorsFromDi()),
     providePrimeNG({
       theme: {
         preset: Aura,
