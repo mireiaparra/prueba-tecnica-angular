@@ -68,4 +68,19 @@ export class AuthService {
       return null;
     }
   }
+
+  public getUserCity(): string | null {
+    const t = this.getToken();
+    if (!t) return null;
+    try {
+      let jsonStr = t;
+      try {
+        jsonStr = atob(t);
+      } catch {}
+      const payload = JSON.parse(jsonStr);
+      return payload?.city ?? null;
+    } catch {
+      return null;
+    }
+  }
 }

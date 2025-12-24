@@ -79,7 +79,7 @@
       class="p-button-danger"
     ></button>
     }
-    <button pButton type="submit" icon="pi pi-check" label="Crear" (click)="onSubmit()"></button>
+    <button pButton type="submit" icon="pi pi-check" [label]="session ? 'Editar' : 'Crear'" (click)="onSubmit()"></button>
     <button
       pButton
       type="button"

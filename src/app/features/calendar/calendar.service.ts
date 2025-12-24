@@ -83,6 +83,12 @@ export class CalendarService {
     if (!this._cache) return of(false);
     const idx = this._cache.findIndex((s) => s.id === id);
     if (idx === -1) return of(false);
+    const session = this._cache[idx];
+    // Only admins belonging to the same city can delete
+    const userCity = this._auth.getUserCity();
+    if (!userCity || (session.city && session.city !== userCity)) {
+      return throwError(() => new Error('Prohibido: solo administradores pertenecientes a la misma ciudad'));
+    }
     this._cache.splice(idx, 1);
     return of(true);
   }

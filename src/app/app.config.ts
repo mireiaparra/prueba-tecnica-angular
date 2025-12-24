@@ -10,6 +10,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import Aura from '@primeuix/themes/aura';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MockAuthInterceptor } from './core/mock-auth.interceptor';
+import { MessageService } from 'primeng/api';
 
 import { routes } from './app.routes';
 import { MyPreset } from './mypreset';
@@ -53,8 +54,8 @@ export const appConfig: ApplicationConfig = {
 				"matchAny": "Coincidir con cualquiera",
 				"addRule": "Adicionar regla",
 				"removeRule": "Eliminar regla",
-				"accept": "Si",
-				"reject": "No",
+				"accept": "Aceptar",
+				"reject": "Cancelar",
 				"choose": "Seleccionar",
 				"noFileChosenMessage": "Ningún archivo seleccionado",
 				"upload": "Subir",
@@ -76,6 +77,7 @@ export const appConfig: ApplicationConfig = {
 			}
 		}),
     provideAnimations(),
+		MessageService,
     { provide: HTTP_INTERCEPTORS, useClass: MockAuthInterceptor, multi: true },
   ],
 };

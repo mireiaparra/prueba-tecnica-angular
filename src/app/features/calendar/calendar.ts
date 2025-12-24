@@ -172,7 +172,7 @@ export class Calendar {
 
   public openCreateModal(session?: SessionItem) {
     const ref = this.dialog.open(SessionCreateModal, {
-      header: 'Nueva sesión',
+      header: session ? 'Editar sesión' : 'Nueva sesión',
       closable: true,
       data: {
         session,

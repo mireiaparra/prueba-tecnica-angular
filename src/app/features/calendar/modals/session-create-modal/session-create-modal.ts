@@ -2,7 +2,7 @@ import { Component, inject, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
@@ -34,6 +34,7 @@ export class SessionCreateModal {
   private fb = inject(FormBuilder);
   private _calendarSvc = inject(CalendarService);
   private _confirm = inject(ConfirmationService);
+  private _msg = inject(MessageService);
   public availableCategories: string[] = ['Formación', 'Reunión', 'Demo'];
 
   public statusOptions: string[] = ['Borrador', 'Bloqueado', 'Oculto'];
@@ -120,7 +121,10 @@ export class SessionCreateModal {
           next: (resp) => {
             this.ref.close(resp);
           },
-          error: () => {},
+          error: (err: any) => {
+            const detail = err?.message || 'No ha sido posible eliminar la sesión.';
+            this._msg.add({ severity: 'error', summary: 'Acción denegada', detail });
+          },
         });
       },
     });
