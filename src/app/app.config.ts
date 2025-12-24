@@ -3,6 +3,7 @@ import {
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection,
 } from '@angular/core';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { providePrimeNG } from 'primeng/config';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -23,6 +24,7 @@ export const appConfig: ApplicationConfig = {
         preset: Aura,
       },
     }),
+    provideAnimations(),
     { provide: HTTP_INTERCEPTORS, useClass: MockAuthInterceptor, multi: true },
   ],
 };

@@ -1,1 +1,53 @@
-<p>calendar works!</p>
+<section class="calendar">
+  <header class="calendar__header">
+    <div class="calendar__nav">
+      <button (click)="prevMonth()">‹</button>
+      <button (click)="nextMonth()">›</button>
+      <h3>{{ filters.month | capitalize }}</h3>
+    </div>
+
+    <div class="calendar__controls">
+      <div class="filter">
+        <p-multiselect
+          [options]="availableCategories"
+          [(ngModel)]="filters.category"
+          (ngModelChange)="getSessions()"
+          [showClear]="true"
+          placeholder="Categorías"
+        ></p-multiselect>
+      </div>
+
+      <div class="filter">
+        <p-multiselect
+          [options]="statusOptions"
+          [(ngModel)]="filters.status"
+          (ngModelChange)="getSessions()"
+          [showClear]="true"
+          placeholder="Estados"
+        ></p-multiselect>
+      </div>
+
+
+      <button (click)="addSession()">Nueva sesión</button>
+    </div>
+  </header>
+
+  <div class="calendar__grid">
+    @for (d of daysInMonth(); track $index) {
+    <div class="day">
+      <div class="day__label">{{ d.getDate() }}</div>
+      <ul class="day__sessions">
+        @for (s of sessionsForDate(d.toISOString().slice(0,10)); track $index) {
+        <li>
+          <div class="sess">
+            <strong>{{ s.title }}</strong>
+            <small>{{ s.date }}</small>
+            <div class="sess__meta">{{ s.category }} • {{ s.status }}</div>
+          </div>
+        </li>
+        }
+      </ul>
+    </div>
+    }
+  </div>
+</section>

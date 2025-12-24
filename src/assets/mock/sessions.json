@@ -1,0 +1,112 @@
+[
+  {
+    "id": "s_1",
+    "title": "Introducción a Angular",
+    "category": "Formación",
+    "status": "available",
+    "date": "2025-12-10T10:00:00",
+    "timeStart": "10:00",
+    "timeEnd": "12:00",
+    "description": "Sesión básica de Angular 20.",
+    "capacity": 20
+  },
+  {
+    "id": "s_2",
+    "title": "Demo de producto",
+    "category": "Demo",
+    "status": "booked",
+    "date": "2025-12-12T15:00:00",
+    "timeStart": "15:00",
+    "timeEnd": "16:00",
+    "description": "Presentación de nuevas funcionalidades.",
+    "capacity": 50
+  },
+  {
+    "id": "s_3",
+    "title": "Reunión de equipo",
+    "category": "Reunión",
+    "status": "available",
+    "date": "2025-12-18T09:30:00",
+    "timeStart": "09:30",
+    "timeEnd": "10:30",
+    "description": "Sincronización semanal.",
+    "capacity": 10
+  },
+  {
+    "id": "s_4",
+    "title": "Formación avanzada RxJS",
+    "category": "Formación",
+    "status": "available",
+    "date": "2025-12-22T14:00:00",
+    "timeStart": "14:00",
+    "timeEnd": "17:00",
+    "description": "Patrones avanzados con RxJS.",
+    "capacity": 15
+  },
+  {
+    "id": "s_5",
+    "title": "Workshop: Buenas prácticas",
+    "category": "Formación",
+    "status": "available",
+    "date": "2025-09-15T09:00:00",
+    "timeStart": "09:00",
+    "timeEnd": "12:00",
+    "description": "Workshop práctico sobre buenas prácticas.",
+    "capacity": 30
+  },
+  {
+    "id": "s_6",
+    "title": "Lanzamiento: Nueva feature",
+    "category": "Demo",
+    "status": "booked",
+    "date": "2025-10-05T14:00:00",
+    "timeStart": "14:00",
+    "timeEnd": "15:00",
+    "description": "Demo en vivo de la nueva feature.",
+    "capacity": 100
+  },
+  {
+    "id": "s_7",
+    "title": "Retrospectiva trimestral",
+    "category": "Reunión",
+    "status": "available",
+    "date": "2025-11-20T11:00:00",
+    "timeStart": "11:00",
+    "timeEnd": "12:30",
+    "description": "Retrospectiva y acciones para el próximo trimestre.",
+    "capacity": 25
+  },
+  {
+    "id": "s_8",
+    "title": "Formación: Testing avanzado",
+    "category": "Formación",
+    "status": "available",
+    "date": "2026-01-10T16:00:00",
+    "timeStart": "16:00",
+    "timeEnd": "19:00",
+    "description": "Técnicas avanzadas de testing.",
+    "capacity": 20
+  },
+  {
+    "id": "s_9",
+    "title": "Demo especial - San Valentín",
+    "category": "Demo",
+    "status": "booked",
+    "date": "2026-02-14T18:00:00",
+    "timeStart": "18:00",
+    "timeEnd": "19:00",
+    "description": "Demo temática especial.",
+    "capacity": 40
+  },
+  {
+    "id": "s_10",
+    "title": "Reunión de planificación",
+    "category": "Reunión",
+    "status": "available",
+    "date": "2026-03-03T09:00:00",
+    "timeStart": "09:00",
+    "timeEnd": "10:30",
+    "description": "Planificación de objetivos.",
+    "capacity": 12
+  }
+]
