@@ -1,4 +1,4 @@
-import { Component, inject, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, inject, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
@@ -31,7 +31,7 @@ export class SessionCreateModal {
   private _calendarSvc = inject(CalendarService);
   public availableCategories: string[] = ['Formación', 'Reunión', 'Demo'];
 
-  public statusOptions: string[] = ['Disponible', 'Reservado', 'Cancelado'];
+  public statusOptions: string[] = ['Borrador', 'Bloqueado', 'Oculto'];
 
   public form = this.fb.group({
     title: [''],
@@ -39,11 +39,50 @@ export class SessionCreateModal {
     image: [''],
     category: ['Formación'],
     city: [''],
-    date: [null],
+    date: [null as Date | null],
     status: ['borrador'],
   });
 
-  constructor(public ref: DynamicDialogRef) {}
+  private dialogRef = (() => {
+    try {
+      return inject(DynamicDialogRef as any) as DynamicDialogRef;
+    } catch {
+      return null;
+    }
+  })();
+
+  private dialogConfig = (() => {
+    try {
+      return inject(DynamicDialogConfig as any) as DynamicDialogConfig;
+    } catch {
+      return null;
+    }
+  })();
+
+  private session: SessionItem | null = null;
+
+  constructor(public ref: DynamicDialogRef) {
+    if (this.dialogConfig && this.dialogConfig.data && (this.dialogConfig.data as any).session) {
+      this.session = (this.dialogConfig.data as any).session as SessionItem;
+    }
+    this._fillForm();
+  }
+
+  private _fillForm() {
+    if (this.session) {
+      this.form.patchValue({
+        title: this.session.title ?? '',
+        description: this.session.description ?? '',
+        image: (this.session as any).image ?? '',
+        category: this.session.category ?? this.availableCategories[0],
+        city: this.session.city ?? '',
+        date: new Date(this.session.date),
+        status: this.session.status ?? this.statusOptions[0],
+      });
+    } else {
+      this.form.reset({ category: this.availableCategories[0], status: this.statusOptions[0] });
+    }
+  }
 
   onSubmit() {
     const raw = this.form.value as any;
@@ -56,14 +95,21 @@ export class SessionCreateModal {
       date: raw.date instanceof Date ? raw.date.toISOString() : raw.date,
       image: raw.image,
     };
-    this._calendarSvc.createSession(payload).subscribe({
-      next: (resp) => {
-        if (resp) {
-          this.ref.close(resp);
-        }
-      },
-      error: () => {},
-    });
+    const id = (this.session && this.session.id) ? this.session.id : null;
+    if (id) {
+      this._calendarSvc.updateSession(id, payload).subscribe({
+        next: (resp) => {
+          if (resp) this.ref.close(resp);
+        },
+      });
+    } else {
+      this._calendarSvc.createSession(payload).subscribe({
+        next: (resp) => {
+          if (resp) this.ref.close(resp);
+        },
+        error: () => {},
+      });
+    }
   }
 
   onCancel() {

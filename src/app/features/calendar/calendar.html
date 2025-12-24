@@ -40,7 +40,7 @@
       <ul class="day__sessions">
         @for (s of sessionsForDate(d.toISOString().slice(0,10)); track $index) {
         <li>
-          <div class="sess">
+          <div class="sess" (click)="openCreateModal(s)">
             <strong>{{ s.title }}</strong>
             <small>{{ s.date }}</small>
             <div class="sess__meta">{{ s.category }} • {{ s.status }}</div>

@@ -35,7 +35,7 @@ export class Calendar {
 
   public availableCategories: string[] = ['Formación', 'Reunión', 'Demo'];
 
-  public statusOptions: string[] = ['Disponible', 'Reservado', 'Cancelado'];
+  public statusOptions: string[] = ['Borrador', 'Bloqueado', 'Oculto'];
 
   ngOnInit() {
     this.getSessions();
@@ -80,10 +80,13 @@ export class Calendar {
 
   public addSession() {}
 
-  public openCreateModal() {
+  public openCreateModal(session?: SessionItem) {
     const ref = this.dialog.open(SessionCreateModal, {
       header: 'Nueva sesión',
-      closable: true
+      closable: true,
+      data: {
+        session
+      }
     });
 
     if (ref && ref.onClose && ref.onClose.subscribe) {

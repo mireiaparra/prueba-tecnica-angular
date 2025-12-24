@@ -11,7 +11,7 @@
 
       <div class="form__input--group">
         <label>Categoría</label>
-        <p-select formControlName="category" [options]="availableCategories" appendTo="body"></p-select>
+        <p-select [filter]="true" formControlName="category" [options]="availableCategories" appendTo="body"></p-select>
       </div>
 
       <div class="form__input--group">
