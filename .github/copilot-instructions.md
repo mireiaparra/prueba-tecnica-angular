@@ -11,4 +11,6 @@ Instrucciones:
 - Ten en cuenta que la persistencia de la sesión va a mantenerse en un token simulado en localStorage o sessionStorage.
 - Permisos y guards para controlar el acceso a las rutas y botones.
 - Uso de componentes separados para mejorar la mantenibilidad.
+- La versión de Angular que estamos usando es la 20. Debes usar recomendaciones como:
+  - Standalone components en lugar de módulos
 
