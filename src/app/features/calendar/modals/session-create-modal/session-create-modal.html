@@ -69,16 +69,7 @@
   </div>
 
   <div class="form__buttons">
-    <button pButton type="submit" icon="pi pi-check" label="Crear" (click)="onSubmit()"></button>
-    <button
-      pButton
-      type="button"
-      (click)="onCancel()"
-      icon="pi pi-times"
-      label="Cancelar"
-      class="p-button-secondary"
-    ></button>
-    @if(session) {
+        @if(session) {
     <button
       pButton
       type="button"
@@ -88,5 +79,14 @@
       class="p-button-danger"
     ></button>
     }
+    <button pButton type="submit" icon="pi pi-check" label="Crear" (click)="onSubmit()"></button>
+    <button
+      pButton
+      type="button"
+      (click)="onCancel()"
+      icon="pi pi-times"
+      label="Cancelar"
+      class="p-button-secondary"
+    ></button>
   </div>
 </form>

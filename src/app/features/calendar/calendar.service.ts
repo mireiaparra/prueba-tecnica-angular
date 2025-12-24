@@ -1,13 +1,15 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { matchesMonthIso, matchesCategoryValue, matchesStatusValue } from './calendar.helpers';
+import { AuthService } from '../../core/auth.service';
 import { SessionFilters, SessionItem } from '../../core/models/Session.interface';
 
 @Injectable({ providedIn: 'root' })
 export class CalendarService {
   private _http = inject(HttpClient);
+  private _auth = inject(AuthService);
 
   private _cache: SessionItem[] | null = null;
 
@@ -43,16 +45,17 @@ export class CalendarService {
   }
 
   public createSession(payload: Partial<SessionItem>): Observable<SessionItem> {
+    if (this._auth.getRole() !== 'admin') return throwError(() => new Error('Prohibido: solo administradores'));
     const id = String(Date.now()) + Math.random().toString(36).slice(2, 8);
     const item: SessionItem = {
       id,
-      title: payload.title || 'Untitled',
+      title: payload.title ?? 'Sin título',
       image: payload.image,
-      description: payload.description,
-      category: payload.category || 'general',
-      city: payload.city,
+      description: payload.description ?? '',
+      category: payload.category ?? 'Formación',
+      city: payload.city ?? '',
       date: payload.date || new Date().toISOString(),
-      status: payload.status || 'borrador',
+      status: payload.status || 'Borrador',
     };
     if (!this._cache) {
       this._cache = [];
@@ -66,6 +69,7 @@ export class CalendarService {
     id: string,
     payload: Partial<SessionItem>
   ): Observable<SessionItem | undefined> {
+    if (this._auth.getRole() !== 'admin') return throwError(() => new Error('Prohibido: solo administradores'));
     if (!this._cache) return of(undefined);
     const idx = this._cache.findIndex((s) => s.id === id);
     if (idx === -1) return of(undefined);
@@ -75,6 +79,7 @@ export class CalendarService {
   }
 
   public deleteSession(id: string): Observable<boolean> {
+    if (this._auth.getRole() !== 'admin') return throwError(() => new Error('Prohibido: solo administradores'));
     if (!this._cache) return of(false);
     const idx = this._cache.findIndex((s) => s.id === id);
     if (idx === -1) return of(false);

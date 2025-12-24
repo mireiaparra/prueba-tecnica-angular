@@ -7,10 +7,10 @@ export interface SessionFilters {
 export interface SessionItem {
   id: string;
   title: string;
-  image?: string; 
-  description?: string;
-  category: string;
-  city?: string;
+  description: string;
+  category: 'Formación' | 'Reunión' | 'Demo';
+  city: string;
   date: string;
-  status: 'borrador' | 'bloqueado' | 'oculto' | string;
+  status: 'Borrador' | 'Bloqueado' | 'Oculto';
+  image?: string; 
 }
