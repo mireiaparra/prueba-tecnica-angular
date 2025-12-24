@@ -2,20 +2,29 @@ import { Component, inject } from '@angular/core';
 import { CommonModule, UpperCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
-import { CalendarService, SessionFilters } from './calendar.service';
+import { CalendarService } from './calendar.service';
+import { AuthService } from '../../core/auth.service';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { SessionItem } from '../../core/models/SessionItem.interface';
 import { CapitalizePipe } from '../../shared/pipes/capitalize.pipe';
+import { SessionFilters, SessionItem } from '../../core/models/Session.interface';
+import { DynamicDialogModule, DialogService } from 'primeng/dynamicdialog';
+import { SessionCreateModal } from './modals/session-create-modal/session-create-modal';
+
 
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CommonModule, FormsModule, MultiSelectModule, InputTextModule, CapitalizePipe],
+  imports: [CommonModule, FormsModule, MultiSelectModule, InputTextModule, CapitalizePipe, DynamicDialogModule],
+  providers: [DialogService],
   templateUrl: './calendar.html',
   styleUrls: ['./calendar.scss'],
 })
 export class Calendar {
   private calendarSvc = inject(CalendarService);
+  private dialog = inject(DialogService);
+  private auth = inject(AuthService);
+
+  public isAdmin = this.auth.getRole() === 'admin';
 
   public sessions: SessionItem[] = [];
 
@@ -70,6 +79,19 @@ export class Calendar {
   }
 
   public addSession() {}
+
+  public openCreateModal() {
+    const ref = this.dialog.open(SessionCreateModal, {
+      header: 'Nueva sesión',
+      closable: true
+    });
+
+    if (ref && ref.onClose && ref.onClose.subscribe) {
+      ref.onClose.subscribe((created: SessionItem | undefined) => {
+        if (created) this.getSessions();
+      });
+    }
+  }
 
   public sessionsForDate(isoDate: string): SessionItem[] {
     return this.sessions.filter((s) => s.date.slice(0, 10) === isoDate);

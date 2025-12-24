@@ -27,8 +27,9 @@
         ></p-multiselect>
       </div>
 
-
-      <button (click)="addSession()">Nueva sesión</button>
+      @if(isAdmin) {
+        <button (click)="openCreateModal()">Nueva sesión</button>
+      }
     </div>
   </header>
 

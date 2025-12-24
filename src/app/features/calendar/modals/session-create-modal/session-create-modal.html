@@ -1,0 +1,42 @@
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+    <div class="form__input--group">
+      <label>Título</label>
+      <input pInputText formControlName="title" />
+    </div>
+
+    <div class="form__input--group">
+      <label>Descripción</label>
+      <textarea pInputTextarea rows="4" formControlName="description"></textarea>
+    </div>
+
+    <div class="form__input--group">
+      <label>Categoría</label>
+      <p-select formControlName="category" [options]="categoryOptions" appendTo="body"></p-select>
+    </div>
+
+    <div class="form__input--group">
+      <label>Ciudad</label>
+      <input pInputText formControlName="city" />
+    </div>
+
+    <div class="form__input--group">
+      <label>Fecha y hora</label>
+      <p-datepicker formControlName="date"  dateFormat="yy-mm-dd" appendTo="body"></p-datepicker>
+    </div>
+
+    <div class="form__input--group">
+      <label>Estado</label>
+      <p-select formControlName="status" [options]="statusOptions" appendTo="body"></p-select>
+    </div>
+
+    <div class="form__buttons">
+      <button pButton type="submit" label="Crear"></button>
+      <button
+        pButton
+        type="button"
+        (click)="ref?.close()"
+        label="Cancelar"
+        class="p-button-secondary"
+      ></button>
+    </div>
+  </form>
