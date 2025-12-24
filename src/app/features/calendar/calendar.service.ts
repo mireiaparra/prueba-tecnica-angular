@@ -54,8 +54,11 @@ export class CalendarService {
       date: payload.date || new Date().toISOString(),
       status: payload.status || 'borrador',
     };
-    if (!this._cache) this._cache = [];
-    this._cache.unshift(item);
+    if (!this._cache) {
+      this._cache = [];
+    } else {
+      this._cache = [...this._cache, item];
+    }
     return of(item);
   }
 
