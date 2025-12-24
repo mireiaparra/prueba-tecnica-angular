@@ -28,7 +28,11 @@
       </div>
 
       @if(isAdmin) {
-      <button pButton type="button" (click)="openCreateModal()">Nueva sesión</button>
+
+      <button class="button" (click)="openCreateModal()">
+        <i class="pi pi-plus-circle"></i>
+        Crear sesiones
+      </button>
       }
     </div>
   </header>
@@ -42,17 +46,14 @@
     <div class="calendar__grid">
       @for(d of daysGrid(); track $index) {
 
-      <div
-        class="day"
-        [ngClass]="{'other-month past': isPast(d), 'today': isToday(d)}"
-      >
+      <div class="day" [ngClass]="{ 'other-month past': isPast(d), today: isToday(d) }">
         <div class="day__label">
-          {{ d.getDate() }} <span class="day__month">{{ monthShort(d) | capitalize}}</span>
+          {{ d.getDate() }} <span class="day__month">{{ monthShort(d) | capitalize }}</span>
         </div>
         <ul class="day__sessions">
           @if(sessionsForDate(d.toISOString().slice(0,10)).length > 0){
           <li>
-              <div
+            <div
               class="sess"
               [ngClass]="statusClass(sessionsForDate(d.toISOString().slice(0, 10))[0].status)"
               (click)="openCreateModal(sessionsForDate(d.toISOString().slice(0, 10))[0])"
