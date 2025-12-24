@@ -20,6 +20,11 @@
         cursor: pointer;
         font-weight: 600;
       }
+      .nav-link--active {
+        border-bottom: 3px solid var(--color-primary);
+        padding-bottom: calc(0.5rem - 3px);
+        color: var(--color-primary);
+      }
     }
   }
 

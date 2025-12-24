@@ -8,7 +8,11 @@ export class AdminGuard implements CanActivate {
   private router = inject(Router);
 
   canActivate(): boolean | UrlTree {
+    if (!this.auth.isAuthenticated()) {
+      return this.router.parseUrl('/login');
+    }
+
     const role = this.auth.getRole();
-    return role === 'admin' ? true : this.router.parseUrl('/');
+    return role === 'admin' ? true : this.router.parseUrl('/calendar');
   }
 }

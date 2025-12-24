@@ -1,12 +1,15 @@
 <nav class="app-header">
   <div class="left">
     <ul class="nav-list">
-      @for(item of menuItems; track $index) {
-
-      <li>
-        <button class="nav-link" type="button" (click)="item.action()">{{ item.label }}</button>
+      <li *ngFor="let item of menuItems; let i = index">
+        <a
+          class="nav-link"
+          [routerLink]="item.url"
+          routerLinkActive="nav-link--active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          >{{ item.label }}</a
+        >
       </li>
-      }
     </ul>
   </div>
 
@@ -15,16 +18,11 @@
       <button class="user-button" type="button" (click)="toggleUserMenu()">
         {{ usernameLabel }}
       </button>
-      @if(userMenuOpen){
-      <ul class="user-dropdown">
-        @for(item of userItems; track $index) {
-        <li>
+      <ul class="user-dropdown" *ngIf="userMenuOpen">
+        <li *ngFor="let item of userItems">
           <button type="button" (click)="item.action(); closeUserMenu()">{{ item.label }}</button>
         </li>
-        }
       </ul>
-
-      }
     </div>
   </div>
 </nav>

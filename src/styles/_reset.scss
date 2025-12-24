@@ -45,6 +45,11 @@ body {
 	background: vars.$color-background;
 	margin: 0;
 }
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
 ol, ul {
 	list-style: none;
 }

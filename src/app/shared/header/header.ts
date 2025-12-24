@@ -1,14 +1,14 @@
 import { Component, inject, effect, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/auth.service';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 type LocalMenuItem = { label: string; icon?: string; action: () => void; url?: string };
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
 })
@@ -52,6 +52,7 @@ export class Header {
         label: 'Calendario',
         icon: 'pi pi-calendar',
         action: () => this.router.navigate(['/calendar']),
+        url: '/calendar',
       },
     ];
 
@@ -60,6 +61,7 @@ export class Header {
         label: 'Administrador',
         icon: 'pi pi-user-cog',
         action: () => this.router.navigate(['/admin']),
+        url: '/admin',
       });
     }
 

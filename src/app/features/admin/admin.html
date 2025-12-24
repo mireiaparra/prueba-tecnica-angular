@@ -1,1 +1,12 @@
-<p>admin works!</p>
+<div class="container">
+  <section class="admin">
+    <header class="admin__header">
+      <h2>Hola, {{ username }}</h2>
+      <p class="admin__subtitle">Crea tareas desde aquí</p>
+    </header>
+  
+    <div class="admin__actions">
+      <button pButton type="button" label="Crear tarea" icon="pi pi-plus" class="button" (click)="openCreateTask()"></button>
+    </div>
+  </section>
+</div>
